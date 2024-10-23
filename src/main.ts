@@ -206,7 +206,7 @@ const gridOptions: GridOptions = {
   /* FDC3: Raise intent whenever a row is double clicked */
   onRowDoubleClicked: ({data}) => {
     console.debug("Row double clicked: ", data);
-    window.fdc3.raiseIntentForContext({
+    window.fdc3.raiseIntent("ViewInstrument", {
       type: "fdc3.instrument",
       name: data.name,
       id: {
@@ -223,11 +223,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* FDC3: Listen for context; update filters based on context */
   window.fdc3.addContextListener("fdc3.instrument", (context) => {
+    console.debug("Received context: ", context);
     gridApi.setGridOption("quickFilterText", context.id?.ticker ?? "");
   });
 
   /* FDC3: Listen for ViewInstrument intent; update filters based on context */
   window.fdc3.addIntentListener("ViewInstrument", (context) => {
+    console.debug("Received intent: ", context);
     gridApi.setGridOption("quickFilterText", context.id?.ticker ?? "");
   });
 });
